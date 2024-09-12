@@ -15,7 +15,8 @@ from turtle import *
 from freegames import path
 
 car = path('car.gif')
-tiles = list(range(32)) * 2
+#caracteres en lugar de numeros
+tiles = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&') * 2
 state = {'mark': None, 'tap_count': 0}  # Añadimos 'tap_count' para contar los taps
 hide = [True] * 64
 game_over = False
@@ -81,7 +82,8 @@ def draw():
     if mark is not None and hide[mark]:
         x, y = xy(mark)
         up()
-        goto(x + 2, y)
+        #centro los caracteres en el cuadro sumandole + 10 a su posición en x
+        goto(x + 10, y)
         color('black')
         write(tiles[mark], font=('Arial', 30, 'normal'))
 
