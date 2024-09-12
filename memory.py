@@ -78,7 +78,8 @@ def draw():
     if mark is not None and hide[mark]:
         x, y = xy(mark)
         up()
-        goto(x + 2, y)
+        #centro los caracteres en el cuadro sumandole + 10 a su posición en x
+        goto(x + 10, y)
         color('black')
         write(tiles[mark], font=('Arial', 30, 'normal'))
 
