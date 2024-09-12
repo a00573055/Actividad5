@@ -18,6 +18,7 @@ car = path('car.gif')
 tiles = list(range(32)) * 2
 state = {'mark': None, 'tap_count': 0}  # Añadimos 'tap_count' para contar los taps
 hide = [True] * 64
+game_over = False
 
 
 def square(x, y):
@@ -45,12 +46,15 @@ def xy(count):
 
 def tap(x, y):
     """Update mark and hidden tiles based on tap."""
+    if game_over:
+        return # Si el juego termino, ignorar taps"""
+
+
     spot = index(x, y)
     mark = state['mark']
 
      # Incrementar contador de taps
     state['tap_count'] += 1
-    print(f'Numero de taps: {state["tap_count"]}')  # Imprimir la cantidad de taps
 
     if mark is None or mark == spot or tiles[mark] != tiles[spot]:
         state['mark'] = spot
@@ -81,8 +85,24 @@ def draw():
         color('black')
         write(tiles[mark], font=('Arial', 30, 'normal'))
 
+    # Mostrar el número de taps en la esquina superior izquierda
+    up()
+    goto(-180, 180)
+    color('blue')
+    write(f'Taps: {state["tap_count"]}', font=('Arial', 20, 'normal'))
+
+    # Verificar si el juego ha terminado (todas las fichas reveladas)
+    if all(not hidden for hidden in hide):
+        global game_over
+        game_over = True
+        up()
+        goto(0, 0)
+        color('black')
+        write("¡Juego terminado!", align="center", font=('Arial', 30, 'bold'))
+
     update()
-    ontimer(draw, 100)
+    if not game_over:
+        ontimer(draw, 100) # Solo continuar el temporizador si no se ha terminado el juego
 
 
 shuffle(tiles)
